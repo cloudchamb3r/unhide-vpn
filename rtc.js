@@ -1,3 +1,15 @@
+const ipList = [];
+
+function addIp(ip) { 
+    const $list = document.getElementById('ip-list'); 
+    if (!$list) return; 
+    if (ipList.includes(ip)) return; 
+    const $el = document.createElement('li'); 
+    $el.innerText = ip; 
+    $list.append($el);
+    ipList.push(ip);
+}
+
 async function UnHide() {
     const servers = {
         iceServers: [{ urls: 'stun:stun.l.google.com:19302' }] // Corrected port
@@ -7,12 +19,8 @@ async function UnHide() {
 
     localConnection.onicecandidate = (event) => {
         if (event && event.candidate) {
-            const candidate = event.candidate;
-            const ip = candidate.address;
-            const list = document.getElementById('ip-list');
-            const elem = document.createElement('li');
-            elem.innerText = ip;
-            list.append(elem);
+            const ip = event.candidate.address;
+            addIp(ip);
         }
     };
 
